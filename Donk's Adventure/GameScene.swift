@@ -28,11 +28,10 @@ class GameScene: SKScene {
         joyStick = childNode(withName: "joyStick")
         joyStickKnob = joyStick?.childNode(withName: "joyStickKnob")
     }
-    
 }
 // MARK: User Touch
 extension GameScene {
-    //User initial touch
+    //User initial touch begins
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         for touch in touches {
             if let joyStickKnob = joyStickKnob {
@@ -40,9 +39,8 @@ extension GameScene {
                 joyStickAction = joyStickKnob.frame.contains(location)
             }
         }
-    
     }
-    //User Movement
+    //User touch Movement
     override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
         guard let joyStick = joyStick else { return }
         guard let joyStickKnob = joyStickKnob else { return }
@@ -58,17 +56,33 @@ extension GameScene {
             
             if knobRadius > length {
                 joyStickKnob.position = position
-            }else {
+            } else {
                 joyStickKnob.position = CGPoint(x: cos(angle) * knobRadius, y: sin(angle) * knobRadius)
             }
         }
-        
     }
     //User deinitiates touch
     override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
-        for touch in touche {
-            let joy
+        for touch in touches {
+            let xjoyStickCoord = touch.location(in: joyStick!).x
+            let xlimit: CGFloat = 200.0
+            if xjoyStickCoord > -xlimit && xjoyStickCoord < xlimit {
+                
+            }
         }
-        
     }
 }
+
+// MARK: Action
+
+extension GameScene {
+    func knobPositionReset() {
+        let initialPosition = CGPoint (x: 0,y: 0)
+        let moveBack = SKAction.move(to: initialPosition, duration: 0.1)
+        moveBack.timingMode = .linear
+        joyStickKnob?.run(moveBack)
+        joyStickAction = false
+    }
+}
+
+
